@@ -1,22 +1,41 @@
-# welcome message
-echo "application name: file to speech 0.0.0"
-echo date
-application_name="FILE TO SPEECH"
-echo "\nhello. you are now using the ${application_name} application. it will read a specified file, and then save its contents to audio format. by default, files are saved inside of the content directory; however, you can change this by providing a location (and its absolue path).\n"
+#!/usr/bin/env bash
+# Application Details
+APP_NAME="FileToSpeech"
+VERSION="1.0.0"
 
-# command line argument to specify a file
-while getopts f:n:e: flag
+# Welcome message
+echo "\n---- ${APP_NAME} — ${VERSION} ----\n"
+
+echo "\nApplication Context"
+echo "${APP_NAME} will read a specified file."
+echo "Read content saves to audio format. The built-in speech synthesis enables this.\n"
+
+echo "\nDefaults:"
+echo "By default, files are saved inside of the \"content\" directory."
+echo "Also, the application is set to expect files located in the User's home directory."
+
+echo "\nFuture Updates:"
+echo "User-defined output destination."
+echo "Additional audio formats beyond .aiff (note: mp3 and wav cause errors for some reason)."
+
+# Command line argument to specify a file
+# f, file (string): Path of the file.
+# n, name (string): Name of output file.
+# e, extension (string): Extension to save the output. 
+
+while getopts f:n: flag
 do
 	case "${flag}" in
 		f) file=${OPTARG};;
 		n) name=${OPTARG};;
-		e) extension=${OPTARG};;
 	esac
 done
 
-# voice update
-echo "the given arguments are: '${file}' '${name}' '${extension}'"
+# Display entered arguments as an update.
+echo "\nOutput Details:"
+echo "The file being spoken: ${file}"
+echo "Output to be saved with this name: ${name}.aiff"
 
-# command to read the file
-echo "reading and then creating a audio file from source."
-cat $file | say -v alex -o content/${name}.${extension}
+# Command to read the file
+echo "Reading and creating an audio file from source."
+cat ~/$file | say -v alex -o content/${name}.aiff 
